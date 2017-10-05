@@ -7,27 +7,13 @@ package com.gs
   */
 object StringCompactor {
   def encode(str: String): String = {
-
-    val chars = str.toCharArray
-
-    def loop(elem: Char, chars: Array[Char], acc: Int): String = {
-      val maybeNext = chars.headOption
-
-      if (maybeNext.isDefined) {
-        val next = maybeNext.get
-
-        if (elem == next) {
-          loop(next, chars.tail, acc + 1)
-        } else {
-          s"$elem$acc${loop(next, chars.tail, 1)}"
-        }
-      } else {
-        s"$elem$acc"
-      }
+    def loop(chars: Array[Char], acc: Int): String = chars match {
+      case Array(head, next, _*) if head == next => loop(chars.tail, acc + 1)
+      case Array(head, next, _*) if head != next => s"$head$acc${loop(chars.tail, 1)}"
+      case Array(head)                           => s"$head$acc"
+      case Array()                               => ""
     }
 
-    chars.headOption.fold("")(loop(_, chars.tail, 1))
+    loop(str.toCharArray, 1)
   }
-
-
 }

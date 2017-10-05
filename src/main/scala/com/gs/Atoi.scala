@@ -1,5 +1,7 @@
 package com.gs
 
+import java.lang.Character.{getNumericValue, isDigit}
+
 /* Problem Name is &&& atoi &&& PLEASE DO NOT REMOVE THIS LINE. */
 
 
@@ -14,58 +16,20 @@ package com.gs
   * 4) If time permits, consider adding robustness to atoi().
   * For example, what type of input checking would be useful?
   */
-
-
-object Solution {
+object Atoi {
 
   /**
     * Takes a string str and returns the int value represented by
     * the string. For example, atoi("42") returns 42.
     */
-  def atoi(str: String): Int = {
+  def parse(str: String): Int = {
+    val number = str.filter(isDigit).map(getNumericValue).foldLeft(0) { (acc, c) => (acc * 10) + c }
 
-    val str2 = if (str.startsWith("-")) str.substring(1, str.length) else str
-
-    str2.foldLeft(0) { case (acc, c) => (acc * 10) + Character.getNumericValue(c) }
-
-
-  }
-
-
-  /**
-    * boolean doTestsPass()
-    * Returns true if all tests pass. Otherwise returns false.
-    */
-  def doTestsPass(): Boolean = {
-
-    println(s"3: ${atoi("3")}")
-    println("")
-    println(s"1: ${atoi("1")}")
-    println("")
-    println(s"1: ${atoi("11")}")
-    println("")
-    println(s"1004: ${atoi("1004")}")
-    println("")
-    println(s"1004: ${atoi("-12")}")
-    println("")
-
-    // todo: implement more tests, please
-    // feel free to make testing more elegant
-    (atoi("3") == 3) &&
-    (atoi("1") != 2) &&
-    (atoi("1004") == 1004)
-  }
-
-
-  /**
-    * Execution entry point.
-    */
-  def main(args: Array[String]) {
-    if (doTestsPass()) {
-      println("All tests pass")
+    str.headOption match {
+      case Some('-') => number * -1
+      case Some('+') => number
+      case _         => number
     }
-    else {
-      println("There are test failures")
-    }
+
   }
 }
