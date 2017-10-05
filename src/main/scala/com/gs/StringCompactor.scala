@@ -6,6 +6,7 @@ package com.gs
   * aabbbcc -> a2b3c2
   */
 object StringCompactor {
+
   def encode(str: String): String = {
     def loop(chars: Array[Char], acc: Int): String = chars match {
       case Array(head, next, _*) if head == next => loop(chars.tail, acc + 1)
